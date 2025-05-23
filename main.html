@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>503 - Сервер на техработах</title>
+    <style>
+        /* Базовые стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        .main-content {
+            max-width: 800px;
+            padding: 3rem 2rem;
+            position: relative;
+            z-index: 2;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        h1 {
+            font-size: 8rem;
+            margin-bottom: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, #6EE7B7, #3B82F6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+            text-shadow: 0 0 20px rgba(110, 231, 183, 0.3);
+        }
+        
+        .main-icon {
+            font-size: 5rem;
+            position: absolute;
+            top: -40px;
+            right: -60px;
+            transform: rotate(15deg);
+            opacity: 0.2;
+            animation: float 4s ease-in-out infinite;
+            filter: drop-shadow(0 0 5px rgba(110, 231, 183, 0.1));
+            color: #6EE7B7;
+        }
+        
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            color: #e0e0e0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        p {
+            font-size: 1.5rem;
+            margin-bottom: 3rem;
+            color: #b0b0b0;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Едва заметные декоративные элементы */
+        .decoration {
+            position: absolute;
+            z-index: 1;
+            opacity: 0.15;
+            animation: float 8s ease-in-out infinite;
+            filter: drop-shadow(0 0 3px rgba(110, 231, 183, 0.05));
+            font-size: 4.5rem;
+            color: #6EE7B7;
+        }
+        
+        .sword {
+            top: 10%;
+            left: 8%;
+            animation-delay: 1.5s;
+        }
+        
+        .pickaxe {
+            bottom: 15%;
+            right: 8%;
+            animation-delay: 2.5s;
+            transform: rotate(-25deg);
+        }
+        
+        .chest {
+            top: 70%;
+            left: 15%;
+            animation-delay: 0.5s;
+            font-size: 5rem;
+        }
+        
+        /* Секция видео */
+        .video-container {
+            width: 100%;
+            max-width: 800px;
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.5);
+            border-top: 1px solid rgba(110, 231, 183, 0.2);
+            z-index: 3;
+        }
+        
+        .video-wrapper {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: rgba(30, 30, 30, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6EE7B7;
+            font-family: 'Minecraft', monospace;
+            font-size: 1.5rem;
+            border: 2px dashed rgba(110, 231, 183, 0.3);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .video-placeholder {
+            padding: 2rem;
+        }
+        
+        /* Остальные стили */
+        .btn {
+            display: inline-block;
+            padding: 1rem 3rem;
+            background: linear-gradient(45deg, #3B82F6, #6366F1);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+        }
+        
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(59, 130, 246, 0.4);
+        }
+        
+        .minecraft-text {
+            font-family: 'Minecraft', monospace;
+            color: #6EE7B7;
+            font-size: 1.2rem;
+            margin-top: 2rem;
+            border-top: 2px solid rgba(110, 231, 183, 0.3);
+            padding-top: 1.5rem;
+            display: inline-block;
+            text-shadow: 0 0 10px rgba(110, 231, 183, 0.3);
+            letter-spacing: 1px;
+        }
+        
+        .status-container {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            display: inline-block;
+            border-left: 4px solid #EF4444;
+            backdrop-filter: blur(5px);
+        }
+        
+        .status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            color: #9CA3AF;
+        }
+        
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #EF4444;
+            margin-right: 0.8rem;
+            animation: pulse 1.5s infinite;
+            box-shadow: 0 0 10px #EF4444;
+        }
+        
+        /* Фоновые элементы */
+        .pixel-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: 1;
+            opacity: 0.3;
+        }
+        
+        /* Анимации */
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.7;
+                transform: scale(1.2);
+            }
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-25px) rotate(5deg);
+            }
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 900px) {
+            h1 {
+                font-size: 6rem;
+            }
+            
+            .main-icon, .decoration {
+                font-size: 3.5rem !important;
+            }
+            
+            .main-icon {
+                top: -30px;
+                right: -40px;
+            }
+            
+            h2 {
+                font-size: 2rem;
+            }
+            
+            p {
+                font-size: 1.2rem;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 4rem;
+            }
+            
+            .main-icon, .decoration {
+                font-size: 2.5rem !important;
+                opacity: 0.1;
+            }
+            
+            .main-icon {
+                top: -20px;
+                right: -25px;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            p {
+                font-size: 1rem;
+            }
+            
+            .main-content {
+                padding: 2rem 1rem;
+            }
+            
+            .video-container {
+                padding: 1rem;
+            }
+            
+            .video-placeholder {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'Minecraft';
+            src: url('https://fonts.cdnfonts.com/css/minecraft-4') format('woff');
+        }
+    </style>
+</head>
+<body>
+    <!-- Фоновые элементы -->
+    <div class="pixel-grid"></div>
+    <div class="decoration sword">⚔️</div>
+    <div class="decoration pickaxe">⛏️</div>
+    <div class="decoration chest">🧰</div>
+    <div class="main-icon">🪚</div>
+    
+    <!-- Основное содержимое -->
+    <div class="main-content">
+        <h1>503</h1>
+        <h2>Сервер На Технических Работах</h2>
+        <p>Наши блоки перегружены, как сундук после рейда. Герои уже работают над восстановлением сервера!</p>
+        
+        <div class="minecraft-text">[Система] Перезагрузка сервера... 47%</div>
+        
+        <div class="status-container">
+            <div class="status">
+                <div class="status-indicator"></div>
+                <span>Криперы атакуют серверные провода</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Секция для видео/стрима -->
+    <div class="video-container">
+        <div class="video-wrapper">
+            <!-- 
+                ЗАМЕНИТЕ ЭТОТ КОД НА ВАШЕ ВИДЕО 
+                Пример для YouTube:
+                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/ВАШ_ID_ВИДЕО" frameborder="0" allowfullscreen></iframe>
+                
+                Если видео нет, оставьте следующую строку:
+            -->
+            <div class="video-placeholder">Скоро...</div>
+        </div>
+    </div>
+</body>
+</html>
