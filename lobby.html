@@ -321,7 +321,7 @@
         <h2>Сервер На Технических Работах</h2>
         <p>Наши блоки перегружены, как сундук после рейда. Герои уже работают над восстановлением сервера!</p>
         
-        <div class="minecraft-text">[Система] Перезагрузка сервера... 47%</div>
+        <div class="minecraft-text" id="loadingText">[Система] Перезагрузка сервера... <span id="progressValue">0</span>%</div>
         
         <div class="status-container">
             <div class="status">
@@ -344,5 +344,34 @@
             <div class="video-placeholder">Скоро...</div>
         </div>
     </div>
+
+    <script>
+        // Анимация прогресса перезагрузки
+        const progressElement = document.getElementById('progressValue');
+        let progress = 0;
+        let increasing = true;
+        const speed = 50; // Скорость анимации (меньше = быстрее)
+
+        function updateProgress() {
+            if (increasing) {
+                progress++;
+                if (progress >= 99) increasing = false;
+            } else {
+                progress--;
+                if (progress <= 0) increasing = true;
+            }
+            
+            progressElement.textContent = progress;
+            
+            // Меняем цвет текста в зависимости от прогресса
+            const hue = increasing ? 120 + progress * 1.2 : 120 + (99 - progress) * 1.2;
+            progressElement.style.color = `hsl(${hue}, 80%, 65%)`;
+            
+            setTimeout(updateProgress, speed);
+        }
+
+        // Запускаем анимацию
+        updateProgress();
+    </script>
 </body>
 </html>
