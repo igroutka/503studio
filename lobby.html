@@ -298,6 +298,36 @@
                 font-size: 1.2rem;
             }
         }
+
+        /* Стили для пасхалки (скрыты в другом классе) */
+        .easter-egg {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 2px solid #6EE7B7;
+            box-shadow: 0 0 30px rgba(110, 231, 183, 0.5);
+            z-index: 1000;
+            display: none;
+            max-width: 80%;
+            text-align: center;
+            font-family: 'Minecraft', monospace;
+            color: #6EE7B7;
+            font-size: 1.5rem;
+        }
+        
+        .easter-egg.show {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
@@ -345,6 +375,12 @@
         </div>
     </div>
 
+    <!-- Пасхалка (изначально скрыта) -->
+    <div class="easter-egg" id="hiddenEgg">
+        <div>Подкастик с sev4ikgame?</div>
+        <div style="margin-top: 1rem; font-size: 1rem;">(нажмите в любом месте, чтобы закрыть)</div>
+    </div>
+
     <script>
         // Анимация прогресса перезагрузки
         const progressElement = document.getElementById('progressValue');
@@ -372,6 +408,31 @@
 
         // Запускаем анимацию
         updateProgress();
+
+        // Пасхалка (скрытая логика)
+        (function() {
+            const egg = document.getElementById('hiddenEgg');
+            let keySequence = [];
+            const secretCode = ['KeyS', 'KeyE', 'KeyV'];
+            
+            document.addEventListener('keydown', (e) => {
+                keySequence.push(e.code);
+                if (keySequence.length > secretCode.length) {
+                    keySequence.shift();
+                }
+                
+                if (keySequence.join('') === secretCode.join('')) {
+                    egg.classList.add('show');
+                    keySequence = [];
+                }
+            });
+            
+            document.addEventListener('click', () => {
+                if (egg.classList.contains('show')) {
+                    egg.classList.remove('show');
+                }
+            });
+        })();
     </script>
 </body>
 </html>
