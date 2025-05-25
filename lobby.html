@@ -125,20 +125,88 @@
         .video-wrapper {
             width: 100%;
             aspect-ratio: 16/9;
-            background: rgba(30, 30, 30, 0.7);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #6EE7B7;
-            font-family: 'Minecraft', monospace;
-            font-size: 1.5rem;
-            border: 2px dashed rgba(110, 231, 183, 0.3);
-            border-radius: 8px;
+            position: relative;
             overflow: hidden;
+            border-radius: 8px;
         }
         
-        .video-placeholder {
-            padding: 2rem;
+        /* Анимированная кнопка Twitch на всю рамку */
+        .twitch-btn-full {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #6441a5, #9147ff, #6441a5);
+            background-size: 200% 200%;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            box-shadow: 0 10px 30px rgba(100, 65, 165, 0.4);
+            animation: twitchGradient 3s ease infinite;
+            position: relative;
+            overflow: hidden;
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+        }
+        
+        .twitch-btn-full:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(100, 65, 165, 0.6);
+        }
+        
+        .twitch-btn-full::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(45deg);
+            animation: twitchShine 3s ease infinite;
+        }
+        
+        .twitch-icon {
+            margin-right: 15px;
+            font-size: 2rem;
+        }
+        
+        .twitch-text {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .twitch-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        
+        .twitch-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            font-family: 'Minecraft', monospace;
+        }
+        
+        @keyframes twitchGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        @keyframes twitchShine {
+            0% { left: -100%; }
+            20% { left: 100%; }
+            100% { left: 100%; }
         }
         
         /* Остальные стили */
@@ -261,6 +329,14 @@
             p {
                 font-size: 1.2rem;
             }
+            
+            .twitch-title {
+                font-size: 2rem;
+            }
+            
+            .twitch-subtitle {
+                font-size: 1rem;
+            }
         }
         
         @media (max-width: 600px) {
@@ -294,8 +370,17 @@
                 padding: 1rem;
             }
             
-            .video-placeholder {
-                font-size: 1.2rem;
+            .twitch-title {
+                font-size: 1.5rem;
+            }
+            
+            .twitch-subtitle {
+                font-size: 0.8rem;
+            }
+            
+            .twitch-icon {
+                font-size: 1.5rem;
+                margin-right: 10px;
             }
         }
 
@@ -407,6 +492,28 @@
             background: #3B82F6;
             color: white;
         }
+
+        /* Конфетти */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            opacity: 0;
+            z-index: 9999;
+            animation: confettiFall 5s ease-in-out forwards;
+        }
+
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
@@ -443,7 +550,13 @@
     <!-- Секция для видео/стрима -->
     <div class="video-container">
         <div class="video-wrapper">
-            <div class="video-placeholder">25.05.25 - 17:00</div>
+            <a href="https://www.twitch.tv/igr0utkaonelove" class="twitch-btn-full" target="_blank">
+                <span class="twitch-icon">🎮</span>
+                <div class="twitch-text">
+                    <div class="twitch-title">МЫ В ЭФИРЕ!</div>
+                    <div class="twitch-subtitle">НАЖМИ, ЧТОБЫ ПЕРЕЙТИ НА TWITCH</div>
+                </div>
+            </a>
         </div>
     </div>
 
@@ -738,6 +851,45 @@
                 }
             });
         })();
+
+        // Эффект конфетти при загрузке страницы
+        function createConfetti() {
+            const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4CAF50', '#8BC34A', '#CDDC39', '#FFEB3B', '#FFC107', '#FF9800', '#FF5722'];
+            
+            for (let i = 0; i < 150; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                
+                // Случайные свойства
+                const size = Math.random() * 10 + 5;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                const left = Math.random() * 100;
+                const animationDuration = Math.random() * 3 + 2;
+                const delay = Math.random() * 5;
+                
+                confetti.style.width = `${size}px`;
+                confetti.style.height = `${size}px`;
+                confetti.style.backgroundColor = color;
+                confetti.style.left = `${left}%`;
+                confetti.style.animationDuration = `${animationDuration}s`;
+                confetti.style.animationDelay = `${delay}s`;
+                
+                // Форма (круг или квадрат)
+                if (Math.random() > 0.5) {
+                    confetti.style.borderRadius = '50%';
+                }
+                
+                document.body.appendChild(confetti);
+                
+                // Удаление после анимации
+                setTimeout(() => {
+                    confetti.remove();
+                }, (animationDuration + delay) * 1000);
+            }
+        }
+
+        // Запуск конфетти при загрузке страницы
+        window.addEventListener('load', createConfetti);
     </script>
 </body>
 </html>
